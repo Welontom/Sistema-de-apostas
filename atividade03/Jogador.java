@@ -46,7 +46,13 @@ public class Jogador {
         
     }
     void adcionarFundos(){
-        this.c.saldo += InOut.leDouble("Quanto deseja adcionar?");
+        double valor;
+        valor = InOut.leDouble("Quanto deseja adcionar?");
+        if(valor > 0){
+            this.c.saldo += valor;
+        }
+        else
+            InOut.MsgDeErro("ERRO", "Valor inválido");
         this.menu();
     }
     void sacar(){
@@ -69,8 +75,9 @@ public class Jogador {
     void apostar(){
         Aposta a = new Aposta();
         boolean loop = true;
+        double valor = 0;
         while(loop == true){
-            double valor = a.valorAposta = InOut.leFloat("Saldo: "+this.c.moeda+this.c.saldo+"\nInsira o valor da aposta: ");
+            valor = a.valorAposta = InOut.leFloat("Saldo: "+this.c.moeda+this.c.saldo+"\nInsira o valor da aposta: ");
             if(valor>this.c.saldo || valor<0){
                 InOut.MsgDeErro("Erro", "Valor Inválido");
             }
@@ -80,7 +87,10 @@ public class Jogador {
             }
         }
         a.inserirJogo(c);
-        this.apostas.add(a); 
+        if(a.jogos.isEmpty())
+            this.c.saldo += valor;
+        else
+            this.apostas.add(a); 
         this.menu();
         
     }
